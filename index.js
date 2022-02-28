@@ -30,13 +30,36 @@ io.on("connection", (socket) => {
   //send and get message
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
     const user = getUser(receiverId);
-    console.log(users);
-    console.log(user);
     if (user) {
       io.to(user.socketId).emit("getMessage", {
         senderId,
         receiverId,
         text,
+      });
+    }
+  });
+
+  socket.on(
+    "updatePendingStatus",
+    ({ bookBorrowingId, bookOwnerId, userId, bookStatus }) => {
+      const user = getUser(bookOwnerId);
+      if (user) {
+        console.log("updating pending status");
+        io.to(user.socketId).emit("updatePendingStatus", {
+          userId,
+          bookStatus,
+          bookBorrowingId,
+        });
+      }
+    }
+  );
+
+  socket.on("confirmRental", ({ bookBorrowingId, userId }) => {
+    const user = getUser(userId);
+    if (user) {
+      console.log("confirming rental");
+      io.to(user.socketId).emit("confirmRental", {
+        bookBorrowingId,
       });
     }
   });
