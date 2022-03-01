@@ -54,6 +54,14 @@ io.on("connection", (socket) => {
     }
   );
 
+  socket.on("initiateChat", (data) => {
+    const user = getUser(data.bookowner_id);
+    if (user) {
+      console.log("initiating chat");
+      io.to(user.socketId).emit("initiateChat", data);
+    }
+  });
+
   socket.on("confirmRental", ({ bookBorrowingId, userId }) => {
     const user = getUser(userId);
     if (user) {
