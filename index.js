@@ -39,50 +39,11 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("updatePendingStatus", (data) => {
-    const user = getUser(data.bookOwnerId);
+  socket.on("updateAllBooks", ({ id }) => {
+    const user = getUser(id);
     if (user) {
-      console.log("updating pending status");
-      io.to(user.socketId).emit("updatePendingStatus", data);
-    }
-  });
-
-  socket.on("initiateChat", (data) => {
-    const user = getUser(data.bookowner_id);
-    if (user) {
-      console.log("initiating chat");
-      io.to(user.socketId).emit("initiateChat", data);
-    }
-  });
-
-  socket.on("confirmRental", ({ bookBorrowingId, userId }) => {
-    const user = getUser(userId);
-    if (user) {
-      console.log("confirming rental");
-      io.to(user.socketId).emit("confirmRental", {
-        bookBorrowingId,
-      });
-    }
-  });
-
-  socket.on("changeRentalStatus", ({ bookBorrowingId, userId, bookStatus }) => {
-    const user = getUser(userId);
-    if (user) {
-      console.log("changing rental status");
-      io.to(user.socketId).emit("changeRentalStatus", {
-        bookBorrowingId,
-        bookStatus,
-      });
-    }
-  });
-
-  socket.on("confirmReturn", ({ bookBorrowingId, userId }) => {
-    const user = getUser(userId);
-    if (user) {
-      console.log("confirming return");
-      io.to(user.socketId).emit("confirmReturn", {
-        bookBorrowingId,
-      });
+      console.log("updating all books");
+      io.to(user.socketId).emit("updateAllBooks", { id });
     }
   });
 
