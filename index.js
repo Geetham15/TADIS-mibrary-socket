@@ -39,11 +39,16 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("updateAllBooks", ({ id, options }) => {
+  socket.on("updateAllBooks", ({ id, options, message, type }) => {
     const user = getUser(id);
     if (user) {
       console.log("updating all books");
-      io.to(user.socketId).emit("updateAllBooks", { id, options });
+      io.to(user.socketId).emit("updateAllBooks", {
+        id,
+        options,
+        message,
+        type,
+      });
     }
   });
 
