@@ -52,6 +52,27 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("initiateChat", ({ id, toUserId, username }) => {
+    const user = getUser(id);
+    if (user) {
+      console.log("initiating chat");
+      io.to(user.socketId).emit("initiateChat", {
+        toUserId,
+        username,
+      });
+    }
+  });
+
+  socket.on("deleteConversation", ({ id, otherId }) => {
+    const user = getUser(id);
+    if (user) {
+      console.log("deleting conversation");
+      io.to(user.socketId).emit("deleteConversation", {
+        otherId,
+      });
+    }
+  });
+
   // when disconnect
   socket.on("disconnect", () => {
     console.log("a user disconnected!");
